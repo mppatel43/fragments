@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/yourname/fragments.git"
   },
-  "author": "Your Name",
+  "author": "Meshvi PATEL",
   "license": "UNLICENSED",
   "devDependencies": {
     "eslint": "^8.40.0",
