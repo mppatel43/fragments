@@ -41,3 +41,5 @@ router.get('/', (req, res) => {
 });
 
 module.exports = router;
+
+const unneededVariable = 'This variable is never used';
