@@ -42,10 +42,10 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-unit-tests:
-  name: Unit Tests
-  runs-on: ubuntu-latest
-  steps:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
         - name: Check out code
           uses: actions/checkout@v3
       
