@@ -28,9 +28,6 @@ app.use(compression());
 passport.use(authenticate.strategy());
 app.use(passport.initialize());
 
-// Define our routes
-app.use('/', require('./routes'));
-
 // Use logging middleware
 app.use(pino);
 
