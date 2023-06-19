@@ -40,8 +40,6 @@ app.use(cors());
 // Use gzip/deflate compression middleware
 app.use(compression());
 
-// modifications to src/app.js
-
 // Remove `app.get('/', (req, res) => {...});` and replace with:
 // Define our routes
 app.use('/', require('./routes'));
