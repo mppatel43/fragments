@@ -31,10 +31,7 @@ RUN npm install
 # Copy src to /app/src/
 COPY ./src ./src
 
-# Start the container by running our server
-CMD npm start
-
-# We run our service on port 8080
+# We run our service on port 8080g
 EXPOSE 8080
 
 # Copy src/
