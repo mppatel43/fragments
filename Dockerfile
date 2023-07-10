@@ -31,14 +31,11 @@ RUN npm install
 # Copy src to /app/src/
 COPY ./src ./src
 
-# We run our service on port 8080g
-EXPOSE 8080
-
-# Copy src/
-COPY ./src ./src
-
 # Copy our HTPASSWD file
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Run the server
-CMD npm start
+CMD ["node","src/server.js"]
+
+# We run our service on port 8080g
+EXPOSE 8080
