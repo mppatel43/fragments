@@ -7,7 +7,6 @@ const logger = require('../logger');
 const md = require('markdown-it')({
   html: true,
 });
-const sharp = require('sharp');
 const mime = require('mime-types');
 
 // Functions for working with fragment metadata/data using our DB
