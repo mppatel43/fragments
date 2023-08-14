@@ -19,7 +19,7 @@ jsonpath "$.status" == "ok"
 # Our fragment ids use https://www.npmjs.com/package/nanoid
 jsonpath "$.fragment.id" matches "^[A-Za-z0-9_-]+$"
 # Our ownerId hash is a hex encoded string
-#jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
+jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
 # Basic check for the presence of created and updated date strings.
 # You could also write a regex for this and use matches
 jsonpath "$.fragment.created" isString
@@ -49,7 +49,7 @@ DELETE {{url}}
 [BasicAuth]
 user1@email.com: password1
 
-HTTP/1.1 404
+HTTP/1.1 200
 
 # 4. Try to GET the fragment we just posted by its URL
 GET {{url}}
@@ -57,4 +57,4 @@ GET {{url}}
 [BasicAuth]
 user1@email.com:password1
 
-HTTP/1.1 200
+HTTP/1.1 404

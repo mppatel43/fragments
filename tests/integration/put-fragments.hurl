@@ -1,4 +1,4 @@
-# tests/integration/post-fragments.hurl
+# tests/integration/put-fragments.hurl
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
 # We're sending a plain text fragment
@@ -30,14 +30,39 @@ jsonpath "$.fragment.size" == 19
 # Capture the Location URL into a variable named `url`
 [Captures]
 url: header "Location"
+created: jsonpath "$.fragment.created"
 
-# 2. Try to GET the fragment we just posted by its URL
+# 2. PUT request to the same URL with updated fragment data
+PUT {{url}}
+Content-Type: text/plain
+[BasicAuth]
+user1@email.com: password1
+`This is a updated fragment!`
+
+# We expect to get back an HTTP 201
+HTTP/1.1 201
+[Asserts]
+jsonpath "$.status" == "ok"
+# Our fragment ids use UUIDs, see https://ihateregex.io/expr/uuid/
+jsonpath "$.fragment.id" matches "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+# Our ownerId hash is a hex encoded string
+jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
+# Basic check for the presence of created and updated date strings.
+# You could also write a regex for this and use matches
+jsonpath "$.fragment.created" equals {{created}}
+jsonpath "$.fragment.updated" isString
+jsonpath "$.fragment.type" == "text/plain"
+# 27 is the length of our updated fragment data: 'This is a updated fragment!'
+jsonpath "$.fragment.size" == 27
+# Capture the Location URL into a variable named `url`
+
+# 3. Try to GET the fragment we just updated by its URL
 GET {{url}}
 [BasicAuth]
 user1@email.com: password1
 
 HTTP/1.1 200
 Content-Type: text/plain
-Content-Length: 19
+Content-Length: 27
 [Asserts]
-body == "This is a fragment!"
+body == "This is a updated fragment!"
