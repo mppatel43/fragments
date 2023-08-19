@@ -7,6 +7,7 @@ const logger = require('../logger');
 const md = require('markdown-it')({
   html: true,
 });
+const sharp = require('sharp');
 const mime = require('mime-types');
 
 // Functions for working with fragment metadata/data using our DB
@@ -17,7 +18,7 @@ const {
   writeFragmentData,
   listFragments,
   deleteFragment,
-} = require('./data/memory/index.js');
+} = require('./data');
 
 class Fragment {
   constructor({
@@ -142,6 +143,14 @@ class Fragment {
     else if (this.mimeType === 'text/markdown') return ['text/markdown', 'text/html', 'text/plain'];
     else if (this.mimeType === 'text/html') return ['text/html', 'text/plain'];
     else if (this.mimeType === 'application/json') return ['application/json', 'text/plain'];
+    else if (this.mimeType === 'image/png')
+      return ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+    else if (this.mimeType === 'image/jpeg')
+      return ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    else if (this.mimeType === 'image/gif')
+      return ['image/gif', 'image/png', 'image/jpeg', 'image/webp'];
+    else if (this.mimeType === 'image/webp')
+      return ['image/webp', 'image/png', 'image/jpeg', 'image/gif'];
     else return [];
   }
 
@@ -157,7 +166,11 @@ class Fragment {
       value == 'text/markdown' ||
       value == 'text/html' ||
       value == 'application/json' ||
-      value == 'application/json; charset=utf-8' 
+      value == 'application/json; charset=utf-8' ||
+      value == 'image/png' ||
+      value == 'image/jpeg' ||
+      value == 'image/gif' ||
+      value == 'image/webp'
     )
       return true;
     else return false;
@@ -181,6 +194,14 @@ class Fragment {
       const entries = Object.entries(obj);
       const result = entries.map(([key, value]) => `${key}: ${value}`).join(', ');
       convertedData = result;
+    } else if (type === 'image/jpeg') {
+      convertedData = await sharp(data).jpeg().toBuffer();
+    } else if (type === 'image/png') {
+      convertedData = await sharp(data).png().toBuffer();
+    } else if (type === 'image/webp') {
+      convertedData = await sharp(data).webp().toBuffer();
+    } else if (type === 'image/gif') {
+      convertedData = await sharp(data).gif().toBuffer();
     }
     return convertedData;
   }

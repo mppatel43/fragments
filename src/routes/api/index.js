@@ -6,13 +6,13 @@
 const express = require('express');
 const contentType = require('content-type');
 const { Fragment } = require('../../model/fragment');
+
 // Create a router on which to mount our API endpoints
 const router = express.Router();
 
-// Define our first route, which will be: GET /v1/fragments
+// get all fragments
 router.get('/fragments', require('./get'));
 
-// Other routes will go here later on...
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>
   express.raw({
@@ -35,6 +35,13 @@ router.post('/fragments', rawBody(), require('./post'));
 router.get('/fragments/:id', require('./getById'));
 
 // get a single fragment metadata
-router.get('/fragments/:id/info', require('./getByIdInfo.js'));
+router.get('/fragments/:id/info', require('./getByIdInfo'));
 
+// delete a single fragment
+router.delete('/fragments/:id', require('./delete'));
+
+// update a single fragment
+router.put('/fragments/:id', rawBody(), require('./put'));
+
+// Export the router so we can mount it in src/app.js
 module.exports = router;

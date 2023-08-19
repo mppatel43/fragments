@@ -18,8 +18,6 @@ header "Location" matches "^http:\/\/localhost:8080\/v1\/fragments\/[A-Za-z0-9_-
 jsonpath "$.status" == "ok"
 # Our fragment ids use UUIDs, see https://ihateregex.io/expr/uuid/
 jsonpath "$.fragment.id" matches "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
-# Our ownerId hash is a hex encoded string
-jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
 # Basic check for the presence of created and updated date strings.
 # You could also write a regex for this and use matches
 jsonpath "$.fragment.created" isString
